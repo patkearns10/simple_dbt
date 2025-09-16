@@ -1,1 +1,0 @@
-select 'bar' as some_column
