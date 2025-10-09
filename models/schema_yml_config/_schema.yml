@@ -1,0 +1,8 @@
+models:
+  - name: schema_yml_config
+    config:
+      freshness:
+        build_after:
+          count: 4
+          period: hour
+          updates_on: all
