@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: A replica of the postgres database
+    database: development
+    schema: dbt_pkearns
+    tables:
+      - name: customers
+        identifier: jaffle_shop__customers
+        columns:
+          - name: id
+            tests:
+              - not_null
+              - unique
+          - name: name
+            config:
+              tags: ['pii']
+      - name: orders
+        identifier: jaffle_shop__orders
+        description: One record per order
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+        config:
+          loaded_at_field: ordered_at
+          freshness:
+            warn_after: {count: 100000, period: day}
+            error_after: {count: 200000, period: day}
+      - name: items
+        identifier: jaffle_shop__items
+      - name: products
+        identifier: jaffle_shop__products
+      - name: stores
+        identifier: jaffle_shop__stores
+      - name: supplies
+        identifier: jaffle_shop__supplies
