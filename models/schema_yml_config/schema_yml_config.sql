@@ -1,0 +1,1 @@
+select 'baz' as some_column
