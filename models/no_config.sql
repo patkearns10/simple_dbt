@@ -1,1 +1,0 @@
-select 'foobar' as some_column

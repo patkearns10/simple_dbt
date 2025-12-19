@@ -37,13 +37,4 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   simple_project:
-    project_yml_config:
-      +freshness:
-        build_after: 
-          count: 8
-          period: hour
-          updates_on: all 
-
-on-run-end:
-  - "{{ log_freshness(results) }}"
-  # - "{{ log_sources(results) }}"
+    +materialized: view
