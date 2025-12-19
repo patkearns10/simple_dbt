@@ -3,7 +3,6 @@
 {{
     config(
       target_database='development',
-      target_schema='dbt_pkearns',
       unique_key='id',
       strategy='timestamp',
       updated_at='updated_at',

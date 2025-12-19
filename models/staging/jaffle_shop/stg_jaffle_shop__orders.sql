@@ -16,7 +16,7 @@ renamed as (
         subtotal,
         tax_paid,
         order_total,
-        'jaffle_shop' as column_to_be_deleted,
+        -- 'jaffle_shop' as column_to_be_deleted,
         current_timestamp as updated_at
 
     from source
