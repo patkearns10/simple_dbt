@@ -24,11 +24,6 @@ sources:
             tests:
               - unique
               - not_null
-        config:
-          loaded_at_field: ordered_at
-          freshness:
-            warn_after: {count: 100000, period: day}
-            error_after: {count: 200000, period: day}
       - name: items
         identifier: jaffle_shop__items
       - name: products
