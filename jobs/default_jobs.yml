@@ -49,27 +49,3 @@ jobs:
     triggers:
       schedule: true
   {% endif %}
-
-  job3:
-    account_id: {{ account_id }}
-    project_id: {{ project_id }}
-    environment_id: {{ environment_id }}
-    dbt_version: null
-    deferring_job_definition_id: null
-    execute_steps:
-    - "dbt parse"
-    execution:
-      timeout_seconds: 0
-    generate_docs: false
-    name: "dbt_parse"
-    run_generate_sources: true
-    schedule:
-      cron: "0 */2 * * *"
-    settings:
-      target_name: production
-      threads: 4
-    state: 1
-    triggers:
-      git_provider_webhook: false
-      github_webhook: false
-      schedule: true
