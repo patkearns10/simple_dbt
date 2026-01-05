@@ -1,0 +1,75 @@
+anchors:
+  &default_settings
+  project_id: {{ project_id }}
+  account_id: {{ account_id }}
+  dbt_version:
+  environment_id: {{ environment_id }}
+  name: ""  
+  schedule:
+    cron: "0 0 1 * *"
+  settings:
+    target_name: default
+    threads: 4
+  triggers:
+    git_provider_webhook: false
+    github_webhook: false
+    schedule: false
+  execution:
+    timeout_seconds: 2400
+  state: 1
+  run_generate_sources: false
+  generate_docs: true
+  job_type: "other"
+
+jobs:
+  # INT environment specific jobs
+  {% if environment_name == "Integration" %}
+  "{{ environment_name }}-CI":
+    <<: *default_settings
+    execute_steps:
+    - "dbt build --select state:modified+ --fail-fast"
+    - "dbt build --select state:modified,config.materialized:incremental --fail-fast"
+    execution:
+      timeout_seconds: 7200
+    job_type: ci
+    run_lint: true
+    errors_on_lint_failure: true
+    generate_docs: false
+    settings:
+      target_name: ci
+      threads: 6
+
+  "{{ environment_name }}-drop_pr_schemas":
+    <<: *default_settings
+    execute_steps:
+    - "dbt run-operation drop_pr_schemas --args '{dry_run: False}'"
+    generate_docs: false
+    schedule:
+      cron: "0 15 * * *"
+    triggers:
+      schedule: true
+  {% endif %}
+
+  job3:
+    account_id: {{ account_id }}
+    project_id: {{ project_id }}
+    environment_id: {{ environment_id }}
+    dbt_version: null
+    deferring_job_definition_id: null
+    execute_steps:
+    - "dbt parse"
+    execution:
+      timeout_seconds: 0
+    generate_docs: false
+    name: "dbt_parse"
+    run_generate_sources: true
+    schedule:
+      cron: "0 */2 * * *"
+    settings:
+      target_name: production
+      threads: 4
+    state: 1
+    triggers:
+      git_provider_webhook: false
+      github_webhook: false
+      schedule: true
