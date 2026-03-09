@@ -1,0 +1,28 @@
+models:
+  - name: stg_jaffle_shop__orders
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        data_tests:
+          - not_null
+      - name: ordered_at
+        data_tests:
+          - not_null
+      - name: store_id
+        data_tests:
+          - not_null
+      - name: subtotal
+        data_tests:
+          - not_null
+      - name: tax_paid
+        data_tests:
+          - not_null
+      - name: order_total
+        data_tests:
+          - not_null
+      - name: updated_at
+        data_tests:
+          - not_null
