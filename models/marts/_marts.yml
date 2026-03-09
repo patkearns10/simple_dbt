@@ -1,0 +1,38 @@
+models:
+  - name: fct_orders
+    columns:
+      - name: ORDER_ID
+        data_tests:
+          - unique
+          - not_null
+      - name: LOCATION_ID
+      - name: CUSTOMER_ID
+        data_tests:
+          - not_null
+      - name: ORDER_TOTAL
+        data_tests:
+          - not_null
+      - name: TAX_PAID
+        data_tests:
+          - not_null
+      - name: ORDERED_AT
+        data_tests:
+          - not_null
+      - name: IS_FOOD_ORDER
+      - name: IS_DRINK_ORDER
+      - name: ORDER_COST
+  - name: dim_customers
+    columns:
+      - name: CUSTOMER_ID
+        tests:
+          - unique
+          - not_null
+      - name: CUSTOMER_NAME
+        tests:
+          - not_null
+      - name: COUNT_LIFETIME_ORDERS
+      - name: FIRST_ORDERED_AT
+      - name: LAST_ORDERED_AT
+      - name: LIFETIME_SPEND_PRETAX
+      - name: LIFETIME_SPEND
+      - name: CUSTOMER_TYPE

@@ -1,0 +1,23 @@
+models:
+  - name: int_order_items
+    columns:
+      - name: ORDER_ITEM_ID
+        tests:
+          - unique
+          - not_null
+      - name: ORDER_ID
+        tests:
+          - not_null
+      - name: PRODUCT_ID
+        tests:
+          - not_null
+      - name: PRODUCT_PRICE
+        tests:
+          - not_null
+      - name: SUPPLY_COST
+      - name: ORDERED_AT
+        tests:
+          - not_null
+      - name: ORDER_TOTAL
+        tests:
+          - not_null
