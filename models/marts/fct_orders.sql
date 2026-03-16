@@ -1,3 +1,11 @@
+
+{{
+   config(
+       materialized=env_var('DBT_MATERIALIZATION')
+   )
+}}
+
+
 with 
 
 orders as (
@@ -15,7 +23,7 @@ order_items as (
 order_items_summary as (
 
     select
-
+    
         order_items.order_id,
         sum(supply_cost) as order_cost
 
