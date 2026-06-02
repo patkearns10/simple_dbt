@@ -5,6 +5,14 @@ sources:
     description: A replica of the postgres database
     database: development
     schema: dbt_pkearns
+    config:
+      freshness:
+        warn_after:  
+          count: 7
+          period: day
+        error_after:  
+          count: 14
+          period: day
     tables:
       - name: customers
         identifier: jaffle_shop__customers
@@ -19,14 +27,6 @@ sources:
       - name: orders
         identifier: jaffle_shop__orders
         description: One record per order
-        config:
-          freshness:
-            warn_after:  
-              count: 7
-              period: day
-            error_after:  
-              count: 14
-              period: day
         columns:
           - name: id
             tests:
