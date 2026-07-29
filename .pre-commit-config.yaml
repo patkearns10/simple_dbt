@@ -1,0 +1,19 @@
+repos:
+  # Refresh manifest.json so dbt-bouncer has current model/source meta to
+  # check. No warehouse connection needed - `dbt parse` is compile-only.
+  - repo: local
+    hooks:
+      - id: dbt-parse
+        name: dbt parse (refresh manifest for tag checks)
+        entry: dbt parse --quiet
+        language: system
+        pass_filenames: false
+        files: ^models/.*\.(sql|yml)$
+
+  # Validate required Snowflake-tag meta keys are present on every changed
+  # model/source. Fails the commit before anything reaches CI or deploy.
+  - repo: https://github.com/godatadriven/dbt-bouncer
+    rev: v3.8.0 # check https://github.com/godatadriven/dbt-bouncer/releases for latest
+    hooks:
+      - id: dbt-bouncer
+        args: ["--config-file", "dbt-bouncer.yml"]

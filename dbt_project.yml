@@ -38,13 +38,29 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   simple_project:
     +materialized: view
+    # Tags are configured at the folder level for marts only, mirroring the
+    # BHP standardised-work-dev project where only the `minau` folder had
+    # +meta.database_tags configured and `minam`/`rail` had none. staging/
+    # and intermediate/ are deliberately left untagged so dbt-bouncer has
+    # something real to catch - see dbt-bouncer.yml and VALIDATION_STEPS.md.
+    marts:
+      +meta:
+        database_tags:
+          DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+          DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
+          DEVELOPMENT.TAGS.SUPPORT_TEAM_NAME: 'Data Utility Team - Demo'
 
 # sources:
 #   simple_project:
 #     +freshness:
-#       warn_after:  
+#       warn_after:
 #         count: 7
 #         period: day
-#       error_after:  
+#       error_after:
 #         count: 14
 #         period: day
+
+# Applies the meta.database_tags declared above as native Snowflake object
+# tags after every dbt invocation. See macros/apply_meta_as_tags.sql.
+on-run-end:
+  - "{{ apply_meta_as_tags(results) }}"
