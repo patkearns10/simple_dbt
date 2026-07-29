@@ -1,0 +1,29 @@
+# dbt-bouncer config for the simple_dbt demo. Validates that the
+# meta.database_tags declared on marts models and the `customers` source
+# match what apply_meta_as_tags (macros/) turns into real Snowflake tags.
+#
+# Run `dbt parse` first to refresh target/manifest.json, then:
+#   dbt-bouncer --config-file dbt-bouncer.yml -v
+dbt_artifacts_dir: target
+custom_checks_dir: custom_checks
+
+manifest_checks:
+  - name: check_model_has_required_database_tags
+    description: >
+      Marts models must declare the Snowflake governance tags applied by
+      apply_meta_as_tags (data domain, IPF classification, support team).
+    include: ^models/marts
+    tag_keys:
+      - DEVELOPMENT.TAGS.DATA_DOMAIN
+      - DEVELOPMENT.TAGS.IPF_CLASSIFICATION
+      - DEVELOPMENT.TAGS.SUPPORT_TEAM_NAME
+
+  - name: check_source_has_required_database_tags
+    description: >
+      jaffle_shop source tables must declare data domain and IPF
+      classification tags. Only `customers` has these configured today -
+      expect the other 5 tables to fail until they're tagged too.
+    include: ^models/staging/jaffle_shop
+    tag_keys:
+      - DEVELOPMENT.TAGS.DATA_DOMAIN
+      - DEVELOPMENT.TAGS.IPF_CLASSIFICATION

@@ -30,6 +30,10 @@ models:
       - name: CUSTOMER_NAME
         tests:
           - not_null
+        config:
+          meta:
+            database_tags:
+              DEVELOPMENT.TAGS.PII: 'TRUE'
       - name: COUNT_LIFETIME_ORDERS
       - name: FIRST_ORDERED_AT
       - name: LAST_ORDERED_AT

@@ -43,12 +43,12 @@ models:
     # +meta.database_tags configured and `minam`/`rail` had none. staging/
     # and intermediate/ are deliberately left untagged so dbt-bouncer has
     # something real to catch - see dbt-bouncer.yml and VALIDATION_STEPS.md.
-    # marts:
-    #   +meta:
-    #     database_tags:
-    #       DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
-    #       DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
-    #       DEVELOPMENT.TAGS.SUPPORT_TEAM_NAME: 'Data Utility Team - Demo'
+    marts:
+      +meta:
+        database_tags:
+          DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+          DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
+          DEVELOPMENT.TAGS.SUPPORT_TEAM_NAME: 'Data Utility Team - Demo'
 
 # sources:
 #   simple_project:

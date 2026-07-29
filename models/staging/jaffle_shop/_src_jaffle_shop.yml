@@ -16,6 +16,16 @@ sources:
     tables:
       - name: customers
         identifier: jaffle_shop__customers
+        # Only this source table is tagged - orders/items/products/stores/
+        # supplies are deliberately left untagged so the dbt-bouncer custom
+        # check (below) has a real gap to catch. dbt doesn't build sources,
+        # so apply_meta_as_tags never touches this table in Snowflake - this
+        # meta is for governance/discovery and pre-commit validation only.
+        config:
+          meta:
+            database_tags:
+              DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+              DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
         columns:
           - name: id
             tests:
@@ -27,6 +37,11 @@ sources:
       - name: orders
         identifier: jaffle_shop__orders
         description: One record per order
+        config:
+          meta:
+            database_tags:
+              DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+              DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
         columns:
           - name: id
             tests:
@@ -34,9 +49,29 @@ sources:
               - not_null
       - name: items
         identifier: jaffle_shop__items
+        config:
+          meta:
+            database_tags:
+              DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+              DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
       - name: products
         identifier: jaffle_shop__products
+        config:
+          meta:
+            database_tags:
+              DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+              DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
       - name: stores
         identifier: jaffle_shop__stores
+        config:
+          meta:
+            database_tags:
+              DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+              DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
       - name: supplies
         identifier: jaffle_shop__supplies
+        config:
+          meta:
+            database_tags:
+              DEVELOPMENT.TAGS.DATA_DOMAIN: 'JAFFLE_SHOP'
+              DEVELOPMENT.TAGS.IPF_CLASSIFICATION: 'INTERNAL'
