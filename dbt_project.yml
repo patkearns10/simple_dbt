@@ -38,6 +38,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   simple_project:
     +materialized: view
+    marts:
+      +materialized: table
     +persist_docs:
       relation: true
       columns: true
