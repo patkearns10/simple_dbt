@@ -1,28 +1,95 @@
 models:
+  - name: stg_jaffle_shop__customers
+    description: One row per customer from Jaffle Shop, with source fields renamed to project conventions.
+    columns:
+      - name: customer_id
+        description: Unique identifier for the customer, renamed from the source `id` field.
+      - name: customer_name
+        description: Customer's display name from the source system.
+
   - name: stg_jaffle_shop__orders
+    description: One row per order from Jaffle Shop, standardizing identifiers and exposing source monetary amounts with a staging-query timestamp.
     columns:
       - name: order_id
+        description: Unique identifier for the order, renamed from the source `id` field.
         data_tests:
           - unique
           - not_null
       - name: customer_id
+        description: Identifier for the customer who placed the order, renamed from the source `customer` field.
         data_tests:
           - not_null
       - name: ordered_at
+        description: Timestamp when the order was placed.
         data_tests:
           - not_null
       - name: store_id
+        description: Identifier for the store where the order was placed.
         data_tests:
           - not_null
       - name: subtotal
+        description: Order amount before tax.
         data_tests:
           - not_null
       - name: tax_paid
+        description: Tax amount charged on the order.
         data_tests:
           - not_null
       - name: order_total
+        description: Final order amount including tax.
         data_tests:
           - not_null
       - name: updated_at
+        description: Timestamp when the staging query produced the record, generated with `current_timestamp`.
         data_tests:
           - not_null
+
+  - name: stg_jaffle_shop__items
+    description: One row per item included in an order, standardizing source order-item and product identifiers.
+    columns:
+      - name: order_item_id
+        description: Unique identifier for the order item, renamed from the source `id` field.
+      - name: order_id
+        description: Identifier for the order containing the item.
+      - name: product_id
+        description: Identifier for the purchased product, renamed from the source `sku` field.
+
+  - name: stg_jaffle_shop__products
+    description: One row per product sold by Jaffle Shop, with standardized identifiers, classification, price, and descriptive attributes.
+    columns:
+      - name: product_id
+        description: Unique product identifier, renamed from the source `sku` field.
+      - name: product_name
+        description: Customer-facing name of the product.
+      - name: product_type
+        description: Product category used to group similar menu items.
+      - name: product_price
+        description: Unit selling price of the product.
+      - name: product_description
+        description: Customer-facing description of the product.
+
+  - name: stg_jaffle_shop__stores
+    description: One row per Jaffle Shop store, including its name, opening timestamp, and applicable tax rate.
+    columns:
+      - name: store_id
+        description: Unique identifier for the store, renamed from the source `id` field.
+      - name: name
+        description: Display name of the store.
+      - name: opened_at
+        description: Timestamp when the store opened for business.
+      - name: tax_rate
+        description: Tax rate applied to orders placed at the store.
+
+  - name: stg_jaffle_shop__supplies
+    description: One row per supply component associated with a product, including cost and perishability attributes.
+    columns:
+      - name: product_id
+        description: Identifier for the product that uses the supply, renamed from the source `id` field.
+      - name: name
+        description: Name of the supply component.
+      - name: supply_cost
+        description: Cost of the supply component, renamed from the source `cost` field.
+      - name: perishable
+        description: Indicator for whether the supply component is perishable.
+      - name: sku
+        description: Source stock-keeping unit associated with the supply record.
