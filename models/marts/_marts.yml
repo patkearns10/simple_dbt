@@ -1,38 +1,67 @@
 models:
   - name: fct_orders
+    description: One row per order, combining staged order amounts and timestamps with the total supply cost of the order's items.
     columns:
       - name: ORDER_ID
+        description: Unique identifier for the order, inherited from the source order record.
         data_tests:
           - unique
           - not_null
-      - name: LOCATION_ID
       - name: CUSTOMER_ID
+        description: Identifier for the customer who placed the order.
         data_tests:
           - not_null
       - name: ORDER_TOTAL
+        description: Final order amount including tax, as recorded by the source system.
         data_tests:
           - not_null
       - name: TAX_PAID
+        description: Tax amount included in the final order total.
         data_tests:
           - not_null
       - name: ORDERED_AT
+        description: Timestamp when the order was placed.
         data_tests:
           - not_null
-      - name: IS_FOOD_ORDER
-      - name: IS_DRINK_ORDER
       - name: ORDER_COST
+        description: Sum of the supply costs associated with all items in the order.
+      - name: STORE_ID
+        description: Identifier for the store where the order was placed.
+      - name: SUBTOTAL
+        description: Order amount before tax.
+      - name: UPDATED_AT
+        description: Timestamp when the staging query produced the order record.
+
   - name: dim_customers
+    description: One row per customer, enriched with lifetime order activity, spend, and a new-versus-returning customer classification.
     columns:
       - name: CUSTOMER_ID
+        description: Unique identifier for the customer, inherited from the source customer record.
         tests:
           - unique
           - not_null
       - name: CUSTOMER_NAME
+        description: Customer's display name from the source system.
         tests:
           - not_null
       - name: COUNT_LIFETIME_ORDERS
+        description: Count of distinct orders attributed to the customer across the available order history.
       - name: FIRST_ORDERED_AT
+        description: Timestamp of the customer's earliest recorded order.
       - name: LAST_ORDERED_AT
+        description: Timestamp of the customer's most recent recorded order.
       - name: LIFETIME_SPEND_PRETAX
+        description: Sum of product prices across the customer's recorded order items, excluding tax.
       - name: LIFETIME_SPEND
+        description: Sum of order totals across rows produced by joining the customer's orders to order items.
       - name: CUSTOMER_TYPE
+        description: Customer lifecycle classification; `returning` indicates more than one distinct order and `new` otherwise.
+
+
+  - name: small_incremental
+    description: Minimal incremental-behavior fixture keyed by `id`; full refreshes emit the `something` row, while incremental runs also emit the `nothing` row.
+    columns:
+      - name: ID
+        description: Integer key used as the model's incremental `unique_key`.
+      - name: TEXT
+        description: Static text value used to distinguish the fixture rows produced by full-refresh and incremental execution paths.

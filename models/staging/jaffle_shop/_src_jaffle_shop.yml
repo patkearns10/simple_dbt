@@ -2,41 +2,104 @@ version: 2
 
 sources:
   - name: jaffle_shop
-    description: A replica of the postgres database
+    description: Source-system tables replicated from the Jaffle Shop application database for customer, order, product, store, and supply analytics.
     database: development
     schema: dbt_pkearns
     config:
       freshness:
-        warn_after:  
+        warn_after:
           count: 7
           period: day
-        error_after:  
+        error_after:
           count: 14
           period: day
     tables:
       - name: customers
         identifier: jaffle_shop__customers
+        description: One row per customer account in the Jaffle Shop application.
         columns:
           - name: id
+            description: Source-system identifier for the customer.
             tests:
               - not_null
               - unique
           - name: name
+            description: Customer's display name as entered in the application.
             config:
               tags: ['pii']
+
       - name: orders
         identifier: jaffle_shop__orders
-        description: One record per order
+        description: One row per order placed through Jaffle Shop.
         columns:
           - name: id
+            description: Source-system identifier for the order.
             tests:
               - unique
               - not_null
+          - name: customer
+            description: Identifier for the customer who placed the order.
+          - name: ordered_at
+            description: Timestamp when the order was placed.
+          - name: store_id
+            description: Identifier for the store where the order was placed.
+          - name: subtotal
+            description: Order amount before tax.
+          - name: tax_paid
+            description: Tax amount charged on the order.
+          - name: order_total
+            description: Final order amount including tax.
+
       - name: items
         identifier: jaffle_shop__items
+        description: One row per product item included in an order.
+        columns:
+          - name: id
+            description: Source-system identifier for the order item.
+          - name: order_id
+            description: Identifier for the order containing the item.
+          - name: sku
+            description: Stock-keeping unit identifying the purchased product.
+
       - name: products
         identifier: jaffle_shop__products
+        description: One row per product available for sale through Jaffle Shop.
+        columns:
+          - name: sku
+            description: Stock-keeping unit that uniquely identifies the product.
+          - name: name
+            description: Customer-facing product name.
+          - name: type
+            description: Product category used to group similar menu items.
+          - name: price
+            description: Unit selling price of the product.
+          - name: description
+            description: Customer-facing details about the product.
+
       - name: stores
         identifier: jaffle_shop__stores
+        description: One row per physical Jaffle Shop store.
+        columns:
+          - name: id
+            description: Source-system identifier for the store.
+          - name: name
+            description: Display name of the store.
+          - name: opened_at
+            description: Timestamp when the store opened for business.
+          - name: tax_rate
+            description: Tax rate applied to orders placed at the store.
+
       - name: supplies
         identifier: jaffle_shop__supplies
+        description: One row per supply component associated with a product.
+        columns:
+          - name: id
+            description: Identifier for the product that uses the supply component.
+          - name: name
+            description: Name of the supply component.
+          - name: cost
+            description: Cost of the supply component.
+          - name: perishable
+            description: Indicator for whether the supply component is perishable.
+          - name: sku
+            description: Stock-keeping unit associated with the supply record.
