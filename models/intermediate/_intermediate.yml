@@ -1,23 +1,31 @@
 models:
   - name: int_order_items
+    description: One row per order item, enriched with product price, total supply cost for the product, and parent-order timing and amount fields.
     columns:
       - name: ORDER_ITEM_ID
+        description: Unique identifier for the individual item included in an order.
         tests:
           - unique
           - not_null
       - name: ORDER_ID
+        description: Identifier for the order containing the item.
         tests:
           - not_null
       - name: PRODUCT_ID
+        description: Identifier for the product purchased as the order item.
         tests:
           - not_null
       - name: PRODUCT_PRICE
+        description: Current unit price of the product from the product source record.
         tests:
           - not_null
       - name: SUPPLY_COST
+        description: Sum of supply-component costs associated with the product.
       - name: ORDERED_AT
+        description: Timestamp when the parent order was placed.
         tests:
           - not_null
       - name: ORDER_TOTAL
+        description: Final amount for the parent order, including tax.
         tests:
           - not_null
