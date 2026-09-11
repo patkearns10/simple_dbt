@@ -1,0 +1,9 @@
+schema_name,table_name,column_name,data_source,alation_column_description,alation_column_url
+DBT_PKEARNS,DIM_CUSTOMERS,CUSTOMER_ID,JAFFLE_SANDBOX,"Business-mastered: canonical customer identifier, stewarded by Commercial Data Governance.",https://example-alation.local/col/1
+DBT_PKEARNS,DIM_CUSTOMERS,CUSTOMER_TYPE,JAFFLE_SANDBOX,"Business-mastered: new-vs-returning classification per the FY26 customer segmentation policy. Includes a $ sign, a ""quoted phrase"", an emoji 🎉, and a
+deliberate line break to exercise escaping.",https://example-alation.local/col/2
+DBT_PKEARNS,FCT_ORDERS,TAX_PAID,JAFFLE_SANDBOX,,https://example-alation.local/col/3
+DBT_PKEARNS,STG_JAFFLE_SHOP__STORES,TAX_RATE,JAFFLE_SANDBOX,__REMOVE_COMMENT__,https://example-alation.local/col/4
+DBT_PKEARNS,WIDE_EVENTS,COL_003,JAFFLE_SANDBOX,"Business-mastered description for col_003, sourced from Alation.",https://example-alation.local/col/5
+DBT_PKEARNS,WIDE_EVENTS,COL_004,JAFFLE_SANDBOX,"Business-mastered description for col_004, sourced from Alation.",https://example-alation.local/col/6
+DBT_PKEARNS,WIDE_EVENTS,COL_026,JAFFLE_SANDBOX,"Business-mastered description for col_026, sourced from Alation.",https://example-alation.local/col/7
