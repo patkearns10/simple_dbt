@@ -1,0 +1,60 @@
+# --------------------------------------------------------------------------
+# Merge these blocks into simple_project's existing dbt_project.yml.
+# They do two things:
+#   1. Turn OFF dbt's native persist_docs everywhere (it has no diffing
+#      logic and, on Snowflake, silently blanks the comment on any column
+#      that isn't in the YAML `columns:` list — see README "Known landmine").
+#   2. Add a project-wide post-hook that calls our own macro instead, which
+#      applies Alation-mastered descriptions where they exist and falls
+#      back to YAML where they don't.
+# --------------------------------------------------------------------------
+
+models:
+  simple_project:
+    +persist_docs:
+      relation: false
+      columns: false
+    +post-hook:
+      - "{{ apply_alation_comments(this) }}"
+
+# seeds only used for the demo
+seeds:
+  simple_project:
+    +schema: alation_metadata
+    alation_table_comments:
+      +column_types:
+        schema_name: varchar(200)
+        table_name: varchar(200)
+        data_source: varchar(200)
+        alation_table_description: varchar(16000)
+        alation_table_url: varchar(1000)
+    alation_column_comments:
+      +column_types:
+        schema_name: varchar(200)
+        table_name: varchar(200)
+        column_name: varchar(200)
+        data_source: varchar(200)
+        alation_column_description: varchar(16000)
+        alation_column_url: varchar(1000)
+
+vars:
+  alation_comments:
+    enabled: true
+    # Substring matched against the seed's DATA_SOURCE column (case-insensitive).
+    # Mirrors Paul's real Alation query pattern: `DATA_SOURCE LIKE '%HDP%'`.
+    # Set to "" to disable the filter entirely.
+    data_source_filter: "JAFFLE_SANDBOX"
+    # keep_existing | yaml | fail — what to do if the Alation table/column
+    # seeds (later: the real Snowflake share) can't be found at all.
+    on_unavailable: keep_existing
+    # A description exactly equal to this value means "explicitly remove
+    # the comment" rather than "no opinion" (a blank/empty description is
+    # always treated as "no opinion" and never erases an existing comment).
+    tombstone_value: "__REMOVE_COMMENT__"
+    # Defensive cap — Snowflake itself doesn't document a hard COMMENT
+    # length limit, but very long comments bloat DESCRIBE/SHOW output and
+    # IDE tooltips, so we truncate with a warning past this many characters.
+    max_comment_length: 8000
+    # If more than one Alation row maps to the same schema.table[.column],
+    # fail loudly instead of silently picking one.
+    fail_on_ambiguous_lookup: true
