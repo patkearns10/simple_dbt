@@ -58,3 +58,16 @@ vars:
     # If more than one Alation row maps to the same schema.table[.column],
     # fail loudly instead of silently picking one.
     fail_on_ambiguous_lookup: true
+    # recreate | alter — how column comments are written on VIEWS.
+    # recreate (default): re-issue the view once with comments inline
+    #   (`create or replace view x (col comment ...) copy grants as ...`),
+    #   avoiding Snowflake's known internal error on
+    #   `ALTER VIEW ... ALTER <col> COMMENT` for some views with inline
+    #   type conversions. alter: the original ALTER VIEW behaviour.
+    # Tables always use ALTER TABLE.
+    view_comment_strategy: recreate
+    # warn | fail — what happens if writing a comment errors.
+    # warn (default): the error is caught inside Snowflake and logged as a
+    #   dbt warning; the model still succeeds and downstream models run.
+    # fail: the error fails the model (previous behaviour).
+    on_comment_error: warn
