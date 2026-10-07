@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: wide_events
+    description: >
+      Synthetic 50-column fixture used only to test lookup performance and
+      comment precedence on wide models. Not real data.
+    columns:
+      - name: col_001
+        description: "YAML-only: no Alation row exists for this column, so this technical description should win."
+      - name: col_002
+        description: "YAML value that Alation overrides — col_002 has a business-mastered row in the seed, so Alation should win here instead."
+      - name: col_025
+        description: "YAML-only, mid-table, to prove column position doesn't affect the merge."
+      # col_003, col_004, col_026 are intentionally undocumented in YAML —
+      # their descriptions come from the Alation seed only.
+      # col_005 .. col_050 (minus the above) are intentionally undocumented
+      # anywhere, to prove they're left with no comment rather than an
+      # empty COMMENT $$$$ overwrite.

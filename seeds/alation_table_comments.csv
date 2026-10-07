@@ -1,0 +1,4 @@
+schema_name,table_name,data_source,alation_table_description,alation_table_url
+DBT_PKEARNS,DIM_CUSTOMERS,JAFFLE_SANDBOX,"Customer master view, mastered in Alation by the Commercial data stewardship team. Combines lifetime order activity with a business-approved new-vs-returning classification.",https://example-alation.local/table/1
+DBT_PKEARNS,FCT_ORDERS,JAFFLE_SANDBOX,,https://example-alation.local/table/2
+DBT_PKEARNS,STG_JAFFLE_SHOP__STORES,JAFFLE_SANDBOX,__REMOVE_COMMENT__,https://example-alation.local/table/3
